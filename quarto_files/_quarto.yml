@@ -1,0 +1,12 @@
+project:
+  type: book
+  title: "Your Project Title"
+  chapters:
+    - chapters/introduction.qmd
+    - chapters/methods.qmd
+    - chapters/results.qmd
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
