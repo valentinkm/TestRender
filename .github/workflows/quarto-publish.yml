@@ -1,0 +1,55 @@
+name: Build and Deploy Quarto Project
+
+on:
+  push:
+    branches:
+      - main  # Set a branch to trigger the workflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Setup R
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v1
+        with:
+          r-version: '4.1.0'  # specify the R version
+
+      # Install Quarto
+      - name: Install Quarto
+        run: |
+          curl -s https://install.quarto.org | bash
+          echo "$HOME/.quarto/bin" >> $GITHUB_PATH
+
+      # Confirm Quarto Version
+      - name: Confirm Quarto Version
+        run: |
+          quarto --version
+
+      # Setup Python
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      # Install Python Dependencies (if any)
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Add any other dependencies that your project needs
+
+      # Build Quarto Project
+      - name: Build Quarto Project
+        run: |
+          quarto render . --to html --output-dir <your-output-folder>
+
+      # Deploy to GitHub Pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./publish
