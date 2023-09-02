@@ -1,2 +1,3 @@
 all:
-	quarto render quarto_files/ --to html --site-dir publish
+	quarto render . --to html --output-dir publish
+
